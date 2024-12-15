@@ -3,8 +3,23 @@ import React from 'react'
 import loginBg from './../../assets/images/loginBg.png'
 import Colors from './../../utils/Colors'
 import { Button } from 'react-native-web'
+import { client } from '../../utils/KindeConfig'
+import services from '../../utils/services'
+import { useRouter } from 'expo-router'
 
 export default function LoginScreen() {
+
+  const router = useRouter();
+  const handleSignIn = async () => {
+    const token = await client.login();
+    if (token) {
+      // User was authenticated
+      await services.storeData('login', 'true');
+      router.replace('/');
+    }
+  };
+
+
   return (
     <View style={{
       display: 'flex',
@@ -41,8 +56,7 @@ export default function LoginScreen() {
         </Text>
 
         <TouchableOpacity style={styles.button}
-          onPress={() => console.log("btn Clicked")}
-        >
+          onPress={handleSignIn}>
           <Text style={{
             textAlign: 'center',
             color: Colors.PRIMARY,
