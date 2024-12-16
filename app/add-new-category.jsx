@@ -7,12 +7,14 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { create } from './../node_modules/@types/istanbul-reports/index.d';
 import { supabase } from './../utils/SupabaseConfig';
 import { client } from './../utils/KindeConfig';
+import { useRouter } from 'expo-router';
 
 export default function addNewCategory() {
   const [selectedIcon, setSelectedIcon] = useState('IC');
   const [selectedColor, setSelectedColor] = useState(Colors.PRIMARY);
   const [categoryName, setCategoryName] = useState();
   const [totalCalories, setTotalCalories] = useState();
+  const router = useRouter();
 
 
   const onCreateCategory = async () => {
@@ -27,6 +29,12 @@ export default function addNewCategory() {
       }]).select();
     console.log(data);
     if (data) {
+      router.replace({
+        Pathname: '/category-details',
+        params: {
+          categoryId: data[0].id
+        }
+      })
       ToastAndroid.show('Category Created!', ToastAndroid.SHORT);
     }
   }
