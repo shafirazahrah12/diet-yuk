@@ -15,6 +15,14 @@ export default function CategoryList({ categoryList = [] }) {
     })
   }
 
+  const calculateTotalCalories = (categoryItems) => {
+    let totalCalories = 0;
+    categoryItems.forEach(item => {
+      totalCalories = totalCalories + item.calories;
+    })
+    return totalCalories;
+  }
+
   return (
     <View style={{ marginTop: 20 }}>
       <Text style={{
@@ -34,9 +42,9 @@ export default function CategoryList({ categoryList = [] }) {
             <View style={styles.subContainer}>
               <View>
                 <Text style={styles.categoryText}>{category.name}</Text>
-                <Text style={styles.itemCount}>{category.CategoryItems.length} Items</Text>
+                <Text style={styles.itemCount}>{category?.CategoryItems?.length} Items</Text>
               </View>
-              <Text style={styles.totalAmountText}>135kal</Text>
+              <Text style={styles.totalAmountText}>{calculateTotalCalories(category.CategoryItems)} cal</Text>
             </View>
           </TouchableOpacity>
         ))}
