@@ -37,7 +37,7 @@ export default function Home() {
   };
 
   const handleRefresh = () => {
-    setRefreshState(!refreshState);  // Memicu render ulang setelah kategori diperbarui
+    setRefreshState(!refreshState);
     getCategoryList();
   };
 
@@ -95,7 +95,7 @@ export default function Home() {
           padding: 20,
           marginTop: -75,
         }}>
-          <CircularChart />
+          <CircularChart categoryList={categoryList} />
           <CategoryList categoryList={categoryList} />
         </View>
 

@@ -1,13 +1,16 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Alert, ToastAndroid } from 'react-native'
 import React from 'react'
 import Entypo from '@expo/vector-icons/Entypo';
 import Colors from '../../utils/Colors';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { supabase } from '../../utils/SupabaseConfig';
+import { useRouter } from 'expo-router';
 
 export default function CourseInfo({ categoryData }) {
   const [totalCalories, setTotalCalories] = useState();
   const [percentageTotal, setPercentageTotal] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
     categoryData && calculateTotalPercentage();
@@ -28,6 +31,32 @@ export default function CourseInfo({ categoryData }) {
     // console.log("Percentage:", percentage);
   }
 
+  const onDeleteCategory = () => {
+    Alert.alert('Are you sure??', 'Do you want to delete?', [
+      {
+        text: 'cancel',
+      },
+      {
+        text: 'yes',
+        style: 'destructive',
+        onPress: async () => {
+          const { error } = await supabase
+            .from('CategoryItems')
+            .delete()
+            .eq('category_id', categoryData.id)
+
+          await supabase
+            .from('Category')
+            .delete()
+            .eq('id', categoryData.id)
+
+          ToastAndroid.show('Category Deleted', ToastAndroid.SHORT);
+          router.replace('/(tabs)');
+        }
+      },
+    ])
+  }
+
   return (
     <View>
       <View style={styles.container}>
@@ -40,7 +69,9 @@ export default function CourseInfo({ categoryData }) {
           <Text style={styles.categoryName}>{categoryData?.name}</Text>
           <Text style={styles.categoryItem}>{categoryData?.CategoryItems?.length} Item</Text>
         </View>
-        <Entypo name="trash" size={24} color="red" />
+        <TouchableOpacity onPress={() => onDeleteCategory(categoryData.id)}>
+          <Entypo name="trash" size={24} color="red" />
+        </TouchableOpacity>
       </View>
       {/* Progress Bar */}
       <View style={styles.amountContainer}>
