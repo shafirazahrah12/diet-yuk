@@ -16,9 +16,14 @@ export default function Home() {
   const router = useRouter();
   const [categoryList, setCategoryList] = useState();
   const [loading, setLoading] = useState(false);
+  const [refreshState, setRefreshState] = useState(false);
+
   useEffect(() => {
-    checkUserAuth();
-    getCategoryList();
+    const init = async () => {
+      await checkUserAuth();
+      await getCategoryList();
+    };
+    init();
   }, [])
 
   // to check user already auth or not
@@ -29,6 +34,11 @@ export default function Home() {
       router.replace('/login');
     }
     console.log("Result: ", result)
+  };
+
+  const handleRefresh = () => {
+    setRefreshState(!refreshState);  // Memicu render ulang setelah kategori diperbarui
+    getCategoryList();
   };
 
   const handleLogout = async () => {
@@ -42,14 +52,23 @@ export default function Home() {
 
   const getCategoryList = async () => {
     setLoading(true);
-    const user = await client.getUserDetails();
-    const { data, error } = await supabase.from('Category')
-      .select('*,CategoryItems(*)')
-      .eq('created_by', user.email)
+    try {
+      const user = await client.getUserDetails();
+      const { data, error } = await supabase.from('Category')
+        .select('*,CategoryItems(*)')
+        .eq('created_by', user.email)
 
+      if (data) {
+        setCategoryList(data)
+      }
+    } catch (error) {
+      console.error("Error fetching category list: ", error);
+    } finally {
+      setLoading(false);
+    }
     console.log("Data", data);
     setCategoryList(data);
-    data && setLoading(false);
+    data
   }
 
   return (
@@ -60,7 +79,7 @@ export default function Home() {
       <ScrollView
         refreshControl={
           <RefreshControl
-            onRefresh={() => getCategoryList()}
+            onRefresh={handleRefresh}
             refreshing={loading}
           />
         }
