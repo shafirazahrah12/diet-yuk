@@ -6,18 +6,20 @@ export default function CourseItemList({ categoryData }) {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Item List</Text>
-
       <View style={{ marginTop: 15 }}>
         {categoryData?.CategoryItems?.length > 0 ? categoryData?.CategoryItems?.map((item, index) => (
           <>
-            <View key={index} style={styles.itemContainer}>
-              <Image source={{ uri: item.image }} style={styles.image} />
-              <View style={{ flex: 1, marginLeft: 10 }}>
-                <Text style={styles.name}>{item.name}</Text>
-                <Text style={styles.url}>{item.url}</Text>
+            <View key={index}>
+              <View style={styles.itemContainer}>
+                <Image source={{ uri: item.image }} style={styles.image} />
+                <View style={{ flex: 1, marginLeft: 10 }}>
+                  <Text style={styles.name}>{item.name}</Text>
+                  <Text style={styles.url}>{item.url}</Text>
+                </View>
+                <Text style={styles.calories}>{item.calories} cal</Text>
               </View>
-              <Text style={styles.calories}>{item.calories} cal</Text>
             </View>
+
             {categoryData?.CategoryItems.length - 1 != index &&
               <View style={{
                 borderWidth: 0.5,
@@ -53,6 +55,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginTop: 10,
   },
   name: {
     fontSize: 20,
