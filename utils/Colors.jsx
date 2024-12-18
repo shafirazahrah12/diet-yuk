@@ -2,7 +2,7 @@ export default {
   BLACK: '#000000',
   WHITE: '#FFFFFF',
   PRIMARY: '#8B42FC',
-  GRAY: '#D4D4D4',
+  GRAY: '#CCCCCC',
   BLUE: '#4F75FE',
   GREEN: '#13C38B',
   PURPLE: '#9F3CFE',

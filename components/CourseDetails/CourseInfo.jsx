@@ -20,7 +20,10 @@ export default function CourseInfo({ categoryData }) {
     setTotalCalories(total);
     // console.log("Total:", total);
 
-    const percentage = (total / categoryData.assigned_calories) * 100;
+    let percentage = (total / categoryData.assigned_calories) * 100;
+    if (percentage > 100) {
+      percentage = 100;
+    }
     setPercentageTotal(percentage);
     // console.log("Percentage:", percentage);
   }
