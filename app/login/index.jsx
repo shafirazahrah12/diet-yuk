@@ -1,6 +1,6 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
-import loginBg from './../../assets/images/loginBg.png'
+import loginBg from './../../assets/images/loginBg-new.jpeg'
 import Colors from './../../utils/Colors'
 import { Button } from 'react-native-web'
 import { client } from '../../utils/KindeConfig'
